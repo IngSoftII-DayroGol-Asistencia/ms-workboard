@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  # WorkBoard API Service
+  workboard-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: workboard-api
+    ports:
+      - "8000:8000"
+    volumes:
+      # Mount code for hot reload during development
+      - .:/app
+      # Persist SQLite database
+      - workboard-data:/app/data
+    environment:
+      - DATABASE_URL=sqlite:///./data/workboard.db
+      - API_HOST=0.0.0.0
+      - API_PORT=8000
+      - CORS_ORIGINS=http://localhost:5173,http://localhost:3000
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+    networks:
+      - workboard-network
+    restart: unless-stopped
+
+  # PostgreSQL Database (optional - for production-like testing)
+  # Uncomment this section if you want to test with PostgreSQL locally
+  # workboard-db:
+  #   image: postgres:15-alpine
+  #   container_name: workboard-db
+  #   environment:
+  #     POSTGRES_DB: workboard_db
+  #     POSTGRES_USER: workboard_user
+  #     POSTGRES_PASSWORD: workboard_pass
+  #   ports:
+  #     - "5432:5432"
+  #   volumes:
+  #     - postgres-data:/var/lib/postgresql/data
+  #   networks:
+  #     - workboard-network
+  #   restart: unless-stopped
+
+  # pgAdmin (optional - for database management)
+  # Uncomment if using PostgreSQL
+  # pgadmin:
+  #   image: dpage/pgadmin4:latest
+  #   container_name: workboard-pgadmin
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: admin@workboard.com
+  #     PGADMIN_DEFAULT_PASSWORD: admin
+  #   ports:
+  #     - "5050:80"
+  #   networks:
+  #     - workboard-network
+  #   restart: unless-stopped
+
+volumes:
+  workboard-data:
+    driver: local
+  # postgres-data:
+  #   driver: local
+
+networks:
+  workboard-network:
+    driver: bridge
