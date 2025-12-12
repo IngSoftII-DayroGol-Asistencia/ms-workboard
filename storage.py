@@ -1,3 +1,4 @@
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
 from contextlib import contextmanager
@@ -431,5 +432,6 @@ class WorkBoardStorage:
         session.add(activity)
 
 
-# Global storage instance
-storage = WorkBoardStorage()
+# Global storage instance - reads DATABASE_URL from environment
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./data/workboard.db")
+storage = WorkBoardStorage(DATABASE_URL)

@@ -1,3 +1,4 @@
+import os
 from fastapi import FastAPI, HTTPException, Query, Path, Body
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -23,10 +24,11 @@ app = FastAPI(
     redoc_url="/redoc"
 )
 
-# CORS configuration - adjust in production
+# CORS configuration - reads from environment variable for production
+cors_origins = os.getenv("CORS_ORIGINS", "*").split(",")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production: ["http://localhost:5173", "https://yourdomain.com"]
+    allow_origins=cors_origins if cors_origins != ["*"] else ["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
