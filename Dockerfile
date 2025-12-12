@@ -22,6 +22,10 @@ COPY . .
 # Create directory for SQLite database (if using SQLite)
 RUN mkdir -p /app/data
 
+# Copy and make startup script executable
+COPY start.sh /app/start.sh
+RUN chmod +x /app/start.sh
+
 # Expose port (Cloud Run uses PORT env variable)
 EXPOSE 8080
 
@@ -29,5 +33,5 @@ EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
     CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:${PORT:-8080}/health')"
 
-# Run the application with dynamic PORT
-CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT:-8080}"]
+# Run the application using startup script
+CMD ["/app/start.sh"]

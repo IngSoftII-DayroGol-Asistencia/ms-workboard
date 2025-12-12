@@ -1,17 +1,14 @@
 # FastAPI and Uvicorn
-fastapi==0.104.1
-uvicorn[standard]==0.24.0
-pydantic==2.5.0
-
-# Database ORM
-sqlalchemy==2.0.23
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+pydantic==2.5.3
+sqlalchemy==2.0.25
+psycopg2-binary==2.9.9
+python-dotenv==1.0.0
+uuid==1.30
 
 # CORS support
 python-multipart==0.0.6
 
 # PostgreSQL adapter (for future Google Cloud SQL migration)
-psycopg2-binary==2.9.9
 pg8000==1.30.3
-
-# Development
-python-dotenv==1.0.0
