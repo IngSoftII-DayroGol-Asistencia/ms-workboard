@@ -88,7 +88,7 @@ class Card(Base):
     priority = Column(SQLEnum(CardPriorityEnum), default=CardPriorityEnum.MEDIUM, nullable=False)
     status = Column(SQLEnum(CardStatusEnum), default=CardStatusEnum.TODO, nullable=False)
     position = Column(Integer, default=0, nullable=False)
-    due_date = Column(DateTime, nullable=True)
+    due_date = Column(DateTime, nullable=False)
     list_id = Column(String, ForeignKey("lists.id", ondelete="CASCADE"), nullable=False, index=True)
     assigned_to = Column(String, nullable=True, index=True)
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)

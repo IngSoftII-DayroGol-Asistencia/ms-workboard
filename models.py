@@ -92,7 +92,7 @@ class CardBase(BaseModel):
     priority: CardPriority = Field(default=CardPriority.MEDIUM)
     status: CardStatus = Field(default=CardStatus.TODO)
     position: int = Field(default=0, ge=0, description="Position order in list")
-    due_date: Optional[datetime] = None
+    due_date: datetime = Field(..., description="Due date for the card")
 
 
 class CardCreate(CardBase):
